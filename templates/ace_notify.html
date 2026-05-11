@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #0E1419;
+    color: #E0E0E0;
+    min-width: 700px;
+    padding: 40px;
+    text-align: center;
+  }
+  .ace-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 40px rgba(255, 68, 102, 0.6);
+  }
+  .ace-title {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    background: linear-gradient(90deg, #ff4466, #ff8800, #ff4466);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    animation: fire-glow 2s infinite;
+  }
+  @keyframes fire-glow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.3); }
+  }
+  .ace-subtitle {
+    font-size: 18px;
+    color: #ff8800;
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+  }
+  .player-card {
+    background: rgba(255, 68, 102, 0.1);
+    border: 2px solid rgba(255, 68, 102, 0.4);
+    border-radius: 16px;
+    padding: 30px;
+    margin: 0 auto 30px;
+    max-width: 500px;
+    box-shadow: 0 0 40px rgba(255, 68, 102, 0.15);
+  }
+  .player-name {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .player-detail {
+    font-size: 14px;
+    color: #aaa;
+    letter-spacing: 2px;
+  }
+  .player-detail .highlight {
+    color: #ff8800;
+    font-weight: 700;
+  }
+  .match-info {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: inline-block;
+  }
+  .match-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ccc;
+  }
+  .match-tournament {
+    font-size: 13px;
+    color: #7b2ff7;
+    margin-top: 4px;
+  }
+  .kill-count {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .kill-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, #ff4466, #ff8800);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 0 10px rgba(255, 68, 102, 0.4);
+  }
+  .footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+  <div class="ace-icon">🔥</div>
+  <div class="ace-title">ACE!</div>
+  <div class="ace-subtitle">五杀达成</div>
+
+  <div class="player-card">
+    <div class="player-name">{{ ace.player_name }}</div>
+    <div class="player-detail">
+      <span class="highlight">{{ ace.map_name }}</span> &middot;
+      第 <span class="highlight">{{ ace.round_number }}</span> 回合 &middot;
+      <span class="highlight">{{ ace.kill_count }}</span> 杀
+    </div>
+    <div class="kill-count">
+      {% for i in range(ace.kill_count) %}
+      <div class="kill-icon">💀</div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if match %}
+  <div class="match-info">
+    <div class="match-name">{{ match.name }}</div>
+    {% if match.tournament %}
+    <div class="match-tournament">{{ match.tournament.name }}</div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <div class="footer">CS2 ACE ALERT | POWERED BY PANDASCORE</div>
+</body>
+</html>

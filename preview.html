@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #f5f5f5;
+    color: #1a1a2e;
+    min-width: 860px;
+    padding: 0;
+  }
+  .page-header {
+    background: #1a1a2e;
+    padding: 28px 36px 22px;
+    text-align: center;
+  }
+  .page-header h1 { font-size: 30px; font-weight: 900; letter-spacing: 6px; color: #fff; }
+  .page-header .date { font-size: 22px; color: #fff; letter-spacing: 3px; margin-top: 10px; }
+  .page-header .sub { font-size: 13px; color: #8888aa; margin-top: 4px; letter-spacing: 1px; }
+  .tournament-section {
+    margin: 16px 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .tournament-header {
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 12px;
+    border-left: 4px solid #1a1a2e;
+    background: #fafafa;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .tournament-name { font-size: 17px; font-weight: 700; color: #1a1a2e; }
+  .tier-badge { padding: 3px 10px; border-radius: 3px; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+  .tier-s { background: #FFD700; color: #1a1a2e; }
+  .tier-a { background: #1a1a2e; color: #fff; }
+  .match-row {
+    display: flex; align-items: center; padding: 16px 24px;
+    border-bottom: 1px solid #f0f0f0; gap: 16px;
+  }
+  .match-row:last-child { border-bottom: none; }
+  .status-col { width: 72px; text-align: center; flex-shrink: 0; }
+  .badge { display: inline-block; padding: 5px 12px; border-radius: 3px; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+  .badge-live { background: #10b981; color: #fff; }
+  .badge-time { background: #e8e8e8; color: #1a1a2e; font-size: 15px; font-weight: 900; }
+  .badge-end { background: #f0f0f0; color: #999; }
+  .team-col { flex: 1; display: flex; align-items: center; gap: 12px; }
+  .team-col.right { justify-content: flex-end; flex-direction: row-reverse; }
+  .team-logo {
+    width: 44px; height: 44px; border-radius: 8px; background: #f0f0f0;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
+  }
+  .team-logo img { width: 34px; height: 34px; object-fit: contain; }
+  .team-name { font-size: 17px; font-weight: 700; color: #1a1a2e; }
+  .score-col { width: 160px; text-align: center; flex-shrink: 0; }
+  .score-num { font-size: 38px; font-weight: 900; letter-spacing: 3px; line-height: 1; }
+  .score-num .sep { color: #ccc; margin: 0 6px; font-weight: 400; }
+  .score-num .winner { color: #10b981; }
+  .score-num .loser { color: #999; }
+  .score-num .draw { color: #1a1a2e; }
+  .map-scores { display: flex; justify-content: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .map-tag { font-size: 11px; padding: 3px 10px; border-radius: 3px; background: #f0f0f0; color: #666; font-weight: 600; }
+  .map-tag.win { color: #10b981; background: #ecfdf5; }
+  .map-tag.lose { color: #ef4444; background: #fef2f2; }
+  .bo-tag { font-size: 10px; color: #999; letter-spacing: 2px; margin-top: 4px; }
+  .footer { text-align: center; padding: 20px; font-size: 11px; color: #bbb; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="page-header">
+  <h1>CS2 ESPORTS</h1>
+  <div class="date">2026年05月11日 周日</div>
+  <div class="sub">今日比赛 | 北京时间</div>
+</div>
+
+<div class="tournament-section">
+  <div class="tournament-header">
+    <span class="tournament-name">PGL Astana 2026</span>
+    <span class="tier-badge tier-s">S</span>
+  </div>
+  <div class="match-row">
+    <div class="status-col"><span class="badge badge-live">LIVE</span></div>
+    <div class="team-col">
+      <div class="team-logo"><div style="font-size:20px;">🔵</div></div>
+      <span class="team-name">Natus Vincere</span>
+    </div>
+    <div class="score-col">
+      <div class="score-num"><span class="winner">13</span><span class="sep">:</span><span class="loser">8</span></div>
+      <div class="bo-tag">BO3</div>
+      <div class="map-scores">
+        <span class="map-tag win">Mirage 13:8</span>
+        <span class="map-tag lose">Dust2 9:13</span>
+      </div>
+    </div>
+    <div class="team-col right">
+      <div class="team-logo"><div style="font-size:20px;">🔴</div></div>
+      <span class="team-name">FaZe Clan</span>
+    </div>
+  </div>
+  <div class="match-row">
+    <div class="status-col"><span class="badge badge-time">21:00</span></div>
+    <div class="team-col">
+      <div class="team-logo"><div style="font-size:20px;">⚫</div></div>
+      <span class="team-name">G2 Esports</span>
+    </div>
+    <div class="score-col">
+      <div class="score-num"><span class="draw">0</span><span class="sep">:</span><span class="draw">0</span></div>
+      <div class="bo-tag">BO3</div>
+    </div>
+    <div class="team-col right">
+      <div class="team-logo"><div style="font-size:20px;">🟡</div></div>
+      <span class="team-name">Team Spirit</span>
+    </div>
+  </div>
+  <div class="match-row">
+    <div class="status-col"><span class="badge badge-end">END</span></div>
+    <div class="team-col">
+      <div class="team-logo"><div style="font-size:20px;">🟡</div></div>
+      <span class="team-name">Vitality</span>
+    </div>
+    <div class="score-col">
+      <div class="score-num"><span class="winner">2</span><span class="sep">:</span><span class="loser">1</span></div>
+      <div class="bo-tag">BO3</div>
+      <div class="map-scores">
+        <span class="map-tag win">Inferno 13:9</span>
+        <span class="map-tag lose">Nuke 8:13</span>
+        <span class="map-tag win">Mirage 13:11</span>
+      </div>
+    </div>
+    <div class="team-col right">
+      <div class="team-logo"><div style="font-size:20px;">🟢</div></div>
+      <span class="team-name">Heroic</span>
+    </div>
+  </div>
+</div>
+
+<div class="tournament-section">
+  <div class="tournament-header">
+    <span class="tournament-name">BLAST Premier Spring 2026</span>
+    <span class="tier-badge tier-a">A</span>
+  </div>
+  <div class="match-row">
+    <div class="status-col"><span class="badge badge-live">LIVE</span></div>
+    <div class="team-col">
+      <div class="team-logo"><div style="font-size:20px;">🔴</div></div>
+      <span class="team-name">MOUZ</span>
+    </div>
+    <div class="score-col">
+      <div class="score-num"><span class="loser">5</span><span class="sep">:</span><span class="winner">10</span></div>
+      <div class="bo-tag">BO1</div>
+    </div>
+    <div class="team-col right">
+      <div class="team-logo"><div style="font-size:20px;">🔵</div></div>
+      <span class="team-name">Complexity</span>
+    </div>
+  </div>
+  <div class="match-row">
+    <div class="status-col"><span class="badge badge-time">23:30</span></div>
+    <div class="team-col">
+      <div class="team-logo"><div style="font-size:20px;">⚫</div></div>
+      <span class="team-name">FURIA</span>
+    </div>
+    <div class="score-col">
+      <div class="score-num"><span class="draw">0</span><span class="sep">:</span><span class="draw">0</span></div>
+      <div class="bo-tag">BO3</div>
+    </div>
+    <div class="team-col right">
+      <div class="team-logo"><div style="font-size:20px;">🔴</div></div>
+      <span class="team-name">Astralis</span>
+    </div>
+  </div>
+</div>
+
+<div class="footer">HLTV / PANDASCORE | CS2 ESPORTS</div>
+</body>
+</html>

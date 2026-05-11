@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #f5f5f5;
+    color: #1a1a2e;
+    min-width: 860px;
+    padding: 0;
+  }
+  .page-header {
+    background: #1a1a2e;
+    padding: 28px 36px 22px;
+    text-align: center;
+  }
+  .page-header h1 {
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: #ffffff;
+  }
+  .page-header .sub {
+    font-size: 13px;
+    color: #8888aa;
+    margin-top: 6px;
+    letter-spacing: 1px;
+  }
+  .tournament-section {
+    margin: 16px 24px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .tournament-header {
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left: 4px solid #1a1a2e;
+    background: #fafafa;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .tournament-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+  .tier-badge {
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .tier-s { background: #FFD700; color: #1a1a2e; }
+  .tier-a { background: #1a1a2e; color: #fff; }
+  .tier-b { background: #6b7280; color: #fff; }
+  .match-row {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 16px;
+  }
+  .match-row:hover { background: #f8f9fa; }
+  .match-row:last-child { border-bottom: none; }
+  .status-col {
+    width: 72px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .badge-live {
+    background: #10b981;
+    color: #fff;
+    animation: glow 2s infinite;
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 6px rgba(16, 185, 129, 0.4); }
+    50% { box-shadow: 0 0 14px rgba(16, 185, 129, 0.7); }
+  }
+  .badge-time {
+    background: #e8e8e8;
+    color: #1a1a2e;
+    font-size: 15px;
+    font-weight: 900;
+  }
+  .badge-end {
+    background: #f0f0f0;
+    color: #999;
+  }
+  .team-col {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .team-col.right {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+  }
+  .team-logo {
+    width: 44px; height: 44px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .team-logo img { width: 34px; height: 34px; object-fit: contain; }
+  .team-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+  .score-col {
+    width: 160px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .score-num {
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    line-height: 1;
+  }
+  .score-num .sep { color: #ccc; margin: 0 6px; font-weight: 400; }
+  .score-num .winner { color: #10b981; }
+  .score-num .loser { color: #999; }
+  .score-num .draw { color: #1a1a2e; }
+  .map-scores {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .map-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    background: #f0f0f0;
+    color: #666;
+    font-weight: 600;
+  }
+  .map-tag.win { color: #10b981; background: #ecfdf5; }
+  .map-tag.lose { color: #ef4444; background: #fef2f2; }
+  .bo-tag { font-size: 10px; color: #999; letter-spacing: 2px; margin-top: 4px; }
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: #bbb;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+{% if header_style == 'horizontal' %}
+<!-- 样式B: 横排日期 -->
+<div class="page-header">
+  <h1>{{ title }}</h1>
+  <div style="display:flex; justify-content:center; align-items:baseline; gap:16px; margin-top:12px;">
+    <span style="font-size:36px; font-weight:900; color:#fff;">{{ date_str }}</span>
+    <span style="font-size:18px; color:#8888aa;">{{ weekday }}</span>
+  </div>
+</div>
+
+{% elif header_style == 'split' %}
+<!-- 样式C: 左右布局 -->
+<div class="page-header" style="display:flex; justify-content:space-between; align-items:center; text-align:left;">
+  <div>
+    <h1>{{ title }}</h1>
+    <div class="sub" style="margin-top:4px;">{{ subtitle }}</div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-size:32px; font-weight:900; color:#fff;">{{ date_full }}</div>
+    <div style="font-size:16px; color:#8888aa;">{{ weekday }}</div>
+  </div>
+</div>
+
+{% else %}
+<!-- 样式A: 大日期居中（默认） -->
+<div class="page-header">
+  <h1>{{ title }}</h1>
+  <div style="font-size:22px; color:#fff; letter-spacing:3px; margin-top:10px;">{{ date_full }} {{ weekday }}</div>
+  <div class="sub" style="margin-top:4px;">{{ subtitle }} | 北京时间</div>
+</div>
+{% endif %}
+
+{% for tid, group in groups.items() %}
+<div class="tournament-section">
+  <div class="tournament-header">
+    <span class="tournament-name">{{ group.name }}</span>
+    {% set tier = group.tier or '' %}
+    {% if tier == 's' %}<span class="tier-badge tier-s">S</span>
+    {% elif tier == 'a' %}<span class="tier-badge tier-a">A</span>
+    {% elif tier == 'b' %}<span class="tier-badge tier-b">B</span>
+    {% endif %}
+  </div>
+
+  {% for match in group.matches %}
+  <div class="match-row">
+    <div class="status-col">
+      {% if match.status == 'running' %}
+        <span class="badge badge-live">LIVE</span>
+      {% elif match.status == 'not_started' %}
+        <span class="badge badge-time">{{ match.bj_time }}</span>
+      {% else %}
+        <span class="badge badge-end">END</span>
+      {% endif %}
+    </div>
+
+    <div class="team-col">
+      <div class="team-logo">
+        {% if match.opponents and match.opponents|length > 0 and match.opponents[0].opponent.image_url %}
+        <img src="{{ match.opponents[0].opponent.image_url }}" alt="">
+        {% endif %}
+      </div>
+      <span class="team-name">{{ match.opponents[0].opponent.name if match.opponents and match.opponents|length > 0 else 'TBD' }}</span>
+    </div>
+
+    <div class="score-col">
+      {% set results = match.results or [] %}
+      {% set t1 = results[0].score if results|length > 0 else 0 %}
+      {% set t2 = results[1].score if results|length > 1 else 0 %}
+      {% if match.status == 'finished' %}
+        {% if t1 > t2 %}
+          <div class="score-num"><span class="winner">{{ t1 }}</span><span class="sep">:</span><span class="loser">{{ t2 }}</span></div>
+        {% elif t2 > t1 %}
+          <div class="score-num"><span class="loser">{{ t1 }}</span><span class="sep">:</span><span class="winner">{{ t2 }}</span></div>
+        {% else %}
+          <div class="score-num">{{ t1 }}<span class="sep">:</span>{{ t2 }}</div>
+        {% endif %}
+      {% else %}
+        <div class="score-num">{{ t1 }}<span class="sep">:</span>{{ t2 }}</div>
+      {% endif %}
+      {% if match.number_of_games %}
+        <div class="bo-tag">BO{{ match.number_of_games }}</div>
+      {% endif %}
+      {% if match.games %}
+        <div class="map-scores">
+        {% for game in match.games %}
+          {% if game.status == 'finished' %}
+            {% set gr = game.results or [] %}
+            {% set gs1 = gr[0].score if gr|length > 0 else 0 %}
+            {% set gs2 = gr[1].score if gr|length > 1 else 0 %}
+            {% set map_name = game.map.name if game.map else 'M' ~ loop.index %}
+            {% set gwid = game.winner.id if game.winner else None %}
+            {% set t1id = match.opponents[0].opponent.id if match.opponents and match.opponents|length > 0 else 0 %}
+            {% if gwid == t1id %}
+              <span class="map-tag win">{{ map_name }} {{ gs1 }}:{{ gs2 }}</span>
+            {% elif gwid %}
+              <span class="map-tag lose">{{ map_name }} {{ gs1 }}:{{ gs2 }}</span>
+            {% else %}
+              <span class="map-tag">{{ map_name }} {{ gs1 }}:{{ gs2 }}</span>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="team-col right">
+      <div class="team-logo">
+        {% if match.opponents and match.opponents|length > 1 and match.opponents[1].opponent.image_url %}
+        <img src="{{ match.opponents[1].opponent.image_url }}" alt="">
+        {% endif %}
+      </div>
+      <span class="team-name">{{ match.opponents[1].opponent.name if match.opponents and match.opponents|length > 1 else 'TBD' }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endfor %}
+
+<div class="footer">HLTV / PANDASCORE | CS2 ESPORTS</div>
+</body>
+</html>

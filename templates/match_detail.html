@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #0E1419;
+    color: #E0E0E0;
+    min-width: 800px;
+    padding: 30px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .tournament-label {
+    font-size: 13px;
+    color: #00CC99;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .match-title {
+    font-size: 16px;
+    color: #888;
+    margin-top: 6px;
+  }
+  .teams-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 30px;
+    padding: 30px 0;
+    border-bottom: 2px solid #2A2D30;
+  }
+  .team-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+  .team-logo-lg {
+    width: 80px; height: 80px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    border: 2px solid rgba(0, 200, 255, 0.25);
+  }
+  .team-logo-lg img {
+    width: 56px; height: 56px;
+    object-fit: contain;
+  }
+  .team-name-lg {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+  }
+  .score-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .big-score {
+    font-size: 56px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: #ffffff;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .big-score .sep { -webkit-text-fill-color: #444; }
+  .status-tag {
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .status-tag.live {
+    background: rgba(0, 255, 136, 0.2);
+    color: #4CAF50;
+    border: 1px solid rgba(0, 255, 136, 0.4);
+  }
+  .status-tag.finished {
+    background: rgba(255, 255, 255, 0.1);
+    color: #999;
+  }
+  .maps-section {
+    margin-top: 10px;
+  }
+  .maps-title {
+    font-size: 14px;
+    color: #4FC3F7;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #2A2D30;
+  }
+  .map-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    border-left: 3px solid #333;
+  }
+  .map-row.winner-left { border-left-color: #00ff88; }
+  .map-row.winner-right { border-left-color: #ff4466; }
+  .map-name {
+    width: 140px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ccc;
+  }
+  .map-bar-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .map-bar {
+    height: 28px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    min-width: 36px;
+    transition: width 0.3s;
+  }
+  .map-bar.left {
+    background: #4CAF50;
+    border-radius: 4px 0 0 4px;
+  }
+  .map-bar.right {
+    background: #FF4444;
+    border-radius: 0 4px 4px 0;
+  }
+  .map-bar.winner { box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+  .map-result {
+    width: 40px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .map-result.w { color: #00ff88; }
+  .map-result.l { color: #ff4466; }
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="tournament-label">{{ match.tournament.name if match.tournament else '' }}</div>
+    <div class="match-title">{{ match.name }}{% if match.bj_date %} | {{ match.bj_date }} 北京时间{% endif %}</div>
+  </div>
+
+  <div class="teams-container">
+    <div class="team-block">
+      <div class="team-logo-lg">
+        {% if match.opponents and match.opponents|length > 0 and match.opponents[0].opponent.image_url %}
+        <img src="{{ match.opponents[0].opponent.image_url }}" alt="">
+        {% endif %}
+      </div>
+      <div class="team-name-lg">{{ match.opponents[0].opponent.name if match.opponents and match.opponents|length > 0 else 'TBD' }}</div>
+    </div>
+
+    <div class="score-center">
+      {% set results = match.results or [] %}
+      {% set t1 = results[0].score if results|length > 0 else 0 %}
+      {% set t2 = results[1].score if results|length > 1 else 0 %}
+      <div class="big-score">{{ t1 }}<span class="sep">:</span>{{ t2 }}</div>
+      {% if match.status == 'running' %}
+      <span class="status-tag live">LIVE</span>
+      {% elif match.status == 'not_started' %}
+      <span class="status-tag live">UPCOMING</span>
+      {% else %}
+      <span class="status-tag finished">FINISHED</span>
+      {% endif %}
+      {% if match.number_of_games %}
+      <div style="font-size:12px;color:#00f5ff;">BO{{ match.number_of_games }}</div>
+      {% endif %}
+    </div>
+
+    <div class="team-block">
+      <div class="team-logo-lg">
+        {% if match.opponents and match.opponents|length > 1 and match.opponents[1].opponent.image_url %}
+        <img src="{{ match.opponents[1].opponent.image_url }}" alt="">
+        {% endif %}
+      </div>
+      <div class="team-name-lg">{{ match.opponents[1].opponent.name if match.opponents and match.opponents|length > 1 else 'TBD' }}</div>
+    </div>
+  </div>
+
+  {% if match.games %}
+  <div class="maps-section">
+    <div class="maps-title">MAP SCORES</div>
+    {% for game in match.games %}
+    {% if game.status == 'finished' %}
+    {% set game_results = game.results or [] %}
+    {% set s1 = game_results[0].score if game_results|length > 0 else 0 %}
+    {% set s2 = game_results[1].score if game_results|length > 1 else 0 %}
+    {% set total = s1 + s2 if s1 + s2 > 0 else 1 %}
+    {% set p1 = (s1 / total * 100) | round(0) | int %}
+    {% set p2 = 100 - p1 %}
+    {% set winner_id = game.winner.id if game.winner else None %}
+    {% set t1_id = match.opponents[0].opponent.id if match.opponents and match.opponents|length > 0 else 0 %}
+    <div class="map-row {{ 'winner-left' if winner_id == t1_id else 'winner-right' if winner_id else '' }}">
+      <div class="map-name">{{ game.map.name if game.map else 'Map ' ~ loop.index }}</div>
+      <div class="map-bar-container">
+        <div class="map-bar left {{ 'winner' if winner_id == t1_id }}" style="width: {{ p1 }}%;">{{ s1 }}</div>
+        <div class="map-bar right {{ 'winner' if winner_id and winner_id != t1_id }}" style="width: {{ p2 }}%;">{{ s2 }}</div>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="footer">POWERED BY PANDASCORE | CS2 ESPORTS TRACKER</div>
+</body>
+</html>

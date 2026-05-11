@@ -1,0 +1,51 @@
+{
+  "data_source": {
+    "description": "数据源选择",
+    "type": "string",
+    "options": ["pandascore", "hltv"],
+    "default": "pandascore",
+    "hint": "pandascore=官方API(免费计划有限制), hltv=自部署HLTV API(免费无限制)"
+  },
+  "pandascore_token": {
+    "description": "PandaScore API Token",
+    "type": "string",
+    "obvious_hint": true,
+    "default": ""
+  },
+  "hltv_api_url": {
+    "description": "HLTV API 地址",
+    "type": "string",
+    "default": "http://localhost:8000",
+    "hint": "自部署的 hltv-api 服务地址，如 http://localhost:8000"
+  },
+  "header_style": {
+    "description": "标题样式",
+    "type": "string",
+    "options": ["center", "horizontal", "split"],
+    "default": "center",
+    "hint": "center=大日期居中, horizontal=横排日期, split=左右布局"
+  },
+  "min_tier": {
+    "description": "最低显示赛事等级（仅PandaScore）",
+    "type": "string",
+    "options": ["s", "a", "b", "all"],
+    "default": "a",
+    "hint": "s=顶级赛事, a=A级及以上, b=B级及以上, all=全部"
+  },
+  "ace_push_enabled": {
+    "description": "启用五杀自动推送",
+    "type": "bool",
+    "default": true
+  },
+  "ace_poll_interval": {
+    "description": "五杀监控轮询间隔（秒），默认 1800（30分钟）",
+    "type": "int",
+    "default": 1800,
+    "hint": "API 有请求上限，建议不要太频繁。"
+  },
+  "push_groups": {
+    "description": "五杀推送目标群 ID 列表（留空则推送到触发命令的群）",
+    "type": "list",
+    "default": []
+  }
+}

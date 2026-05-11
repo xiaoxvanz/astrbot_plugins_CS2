@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #0E1419;
+    color: #E0E0E0;
+    min-width: 800px;
+    padding: 30px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid #4CAF50;
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    background: linear-gradient(90deg, #7b2ff7, #00f5ff, #7b2ff7);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: #888;
+    margin-top: 8px;
+    letter-spacing: 2px;
+  }
+  .tournament-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #2A2D30;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tournament-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: #00CC99;
+  }
+  .tournament-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .tournament-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .tier-badge {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .tier-s {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 165, 0, 0.2));
+    color: #ffd700;
+    border: 1px solid rgba(255, 215, 0, 0.5);
+  }
+  .tier-a {
+    background: rgba(0, 245, 255, 0.15);
+    color: #00f5ff;
+    border: 1px solid rgba(0, 245, 255, 0.3);
+  }
+  .tier-b {
+    background: rgba(123, 47, 247, 0.15);
+    color: #b07fff;
+    border: 1px solid rgba(123, 47, 247, 0.3);
+  }
+  .tier-other {
+    background: rgba(255, 255, 255, 0.1);
+    color: #999;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .tournament-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    color: #888;
+  }
+  .tournament-meta span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .meta-label {
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .meta-value {
+    color: #ccc;
+    font-weight: 600;
+  }
+  .prizepool {
+    color: #00ff88;
+    font-weight: 700;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>{{ title }}</h1>
+    <div class="subtitle">{{ subtitle }}</div>
+  </div>
+
+  {% for t in tournaments %}
+  <div class="tournament-card">
+    <div class="tournament-header">
+      <div class="tournament-name">{{ t.name }}</div>
+      {% set tier = t.tier or '' %}
+      {% if tier == 's' %}
+      <span class="tier-badge tier-s">S-TIER</span>
+      {% elif tier == 'a' %}
+      <span class="tier-badge tier-a">A-TIER</span>
+      {% elif tier == 'b' %}
+      <span class="tier-badge tier-b">B-TIER</span>
+      {% else %}
+      <span class="tier-badge tier-other">{{ tier.upper() if tier else 'OTHER' }}</span>
+      {% endif %}
+    </div>
+    <div class="tournament-meta">
+      {% if t.league %}
+      <span>
+        <span class="meta-label">League</span>
+        <span class="meta-value">{{ t.league.name }}</span>
+      </span>
+      {% endif %}
+      {% if t.begin_at %}
+      <span>
+        <span class="meta-label">Date</span>
+        <span class="meta-value">{{ t.begin_at[:10] }}{% if t.end_at %} ~ {{ t.end_at[:10] }}{% endif %} (北京时间)</span>
+      </span>
+      {% endif %}
+      {% if t.prizepool %}
+      <span>
+        <span class="meta-label">Prize</span>
+        <span class="meta-value prizepool">{{ t.prizepool }}</span>
+      </span>
+      {% endif %}
+      {% if t.serie %}
+      <span>
+        <span class="meta-label">Serie</span>
+        <span class="meta-value">{{ t.serie.full_name if t.serie.full_name else t.serie.name }}</span>
+      </span>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="footer">POWERED BY PANDASCORE | CS2 ESPORTS TRACKER</div>
+</body>
+</html>
