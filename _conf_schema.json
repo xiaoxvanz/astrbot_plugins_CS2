@@ -2,9 +2,9 @@
   "data_source": {
     "description": "数据源选择",
     "type": "string",
-    "options": ["pandascore", "hltv"],
-    "default": "pandascore",
-    "hint": "pandascore=官方API(免费计划有限制), hltv=自部署HLTV API(免费无限制)"
+    "options": ["merged", "hltv", "pandascore"],
+    "default": "merged",
+    "hint": "merged=HLTV赛程+PandaScore队标(推荐), hltv=仅HLTV, pandascore=仅PandaScore"
   },
   "pandascore_token": {
     "description": "PandaScore API Token",
@@ -31,6 +31,30 @@
     "options": ["s", "a", "b", "all"],
     "default": "a",
     "hint": "s=顶级赛事, a=A级及以上, b=B级及以上, all=全部"
+  },
+  "match_reminder_enabled": {
+    "description": "启用比赛提醒",
+    "type": "bool",
+    "default": false,
+    "hint": "关注的比赛开赛前自动推送提醒"
+  },
+  "match_reminder_minutes": {
+    "description": "比赛提醒提前时间（分钟）",
+    "type": "int",
+    "default": 15,
+    "hint": "开赛前多少分钟推送提醒"
+  },
+  "post_match_push_enabled": {
+    "description": "启用赛后推送",
+    "type": "bool",
+    "default": false,
+    "hint": "今日比赛结束自动推送比分结果"
+  },
+  "followed_teams": {
+    "description": "关注的队伍名称列表",
+    "type": "list",
+    "default": [],
+    "hint": "只推送关注队伍的比赛提醒，留空则推送所有比赛"
   },
   "ace_push_enabled": {
     "description": "启用五杀自动推送",

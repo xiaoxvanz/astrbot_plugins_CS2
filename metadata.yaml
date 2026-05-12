@@ -2,6 +2,6 @@ name: astrbot_plugin_cs2
 display_name: CS2 赛事查询
 desc: 查询 CS2 赛事信息，支持比赛列表、详情、比分，以及五杀自动推送
 short_desc: CS2 赛事查询 & 五杀推送
-version: 0.1.0
+version: 0.1.1
 author: xiaoxvan
 repo: ""

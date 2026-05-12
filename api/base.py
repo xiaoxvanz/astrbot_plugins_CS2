@@ -57,6 +57,14 @@ class BaseAPIProvider(ABC):
         """获取比赛击杀事件（用于五杀检测）"""
         ...
 
+    async def get_ranking(self, limit: int = 30) -> list[dict]:
+        """获取世界排名（可选实现）"""
+        return []
+
+    async def get_live_matches(self) -> list[dict]:
+        """获取正在进行的比赛（含地图小分，可选实现）"""
+        return []
+
     @abstractmethod
     async def close(self):
         """关闭连接"""

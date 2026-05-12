@@ -213,6 +213,7 @@
 
   {% for match in group.matches %}
   <div class="match-row">
+    <div style="width:28px; text-align:center; flex-shrink:0; font-size:13px; color:#999; font-weight:700;">{{ match._index if match._index is defined else '' }}</div>
     <div class="status-col">
       {% if match.status == 'running' %}
         <span class="badge badge-live">LIVE</span>
@@ -226,49 +227,43 @@
     <div class="team-col">
       <div class="team-logo">
         {% if match.opponents and match.opponents|length > 0 and match.opponents[0].opponent.image_url %}
-        <img src="{{ match.opponents[0].opponent.image_url }}" alt="">
+        {% if match.opponents[0].opponent.image_url %}
+        <img src="{{ match.opponents[0].opponent.image_url }}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=&quot;font-size:18px;font-weight:900;color:#555&quot;>{{ match.opponents[0].opponent.name[:2] }}</span>'">
+        {% else %}
+        <span style="font-size:18px;font-weight:900;color:#555">{{ match.opponents[0].opponent.name[:2] }}</span>
+        {% endif %}
         {% endif %}
       </div>
-      <span class="team-name">{{ match.opponents[0].opponent.name if match.opponents and match.opponents|length > 0 else 'TBD' }}</span>
+      <span class="team-name">{{ (match.opponents[0].opponent.name or 'TBD') if match.opponents and match.opponents|length > 0 else 'TBD' }}</span>
     </div>
 
     <div class="score-col">
       {% set results = match.results or [] %}
-      {% set t1 = results[0].score if results|length > 0 else 0 %}
-      {% set t2 = results[1].score if results|length > 1 else 0 %}
-      {% if match.status == 'finished' %}
-        {% if t1 > t2 %}
-          <div class="score-num"><span class="winner">{{ t1 }}</span><span class="sep">:</span><span class="loser">{{ t2 }}</span></div>
-        {% elif t2 > t1 %}
-          <div class="score-num"><span class="loser">{{ t1 }}</span><span class="sep">:</span><span class="winner">{{ t2 }}</span></div>
+      {% if results|length > 0 %}
+        {% set t1 = results[0].score %}
+        {% set t2 = results[1].score if results|length > 1 else 0 %}
+        {% if match.status == 'finished' %}
+          {% if t1 > t2 %}
+            <div class="score-num"><span class="winner">{{ t1 }}</span><span class="sep">:</span><span class="loser">{{ t2 }}</span></div>
+          {% elif t2 > t1 %}
+            <div class="score-num"><span class="loser">{{ t1 }}</span><span class="sep">:</span><span class="winner">{{ t2 }}</span></div>
+          {% else %}
+            <div class="score-num">{{ t1 }}<span class="sep">:</span>{{ t2 }}</div>
+          {% endif %}
         {% else %}
           <div class="score-num">{{ t1 }}<span class="sep">:</span>{{ t2 }}</div>
         {% endif %}
+      {% elif match._live_scores and match._live_scores.team1_current is not none and match._live_scores.team2_current is not none %}
+        <div class="score-num">{{ match._live_scores.team1_current }}<span class="sep">:</span>{{ match._live_scores.team2_current }}</div>
       {% else %}
-        <div class="score-num">{{ t1 }}<span class="sep">:</span>{{ t2 }}</div>
+        <div class="score-num" style="font-size:14px; color:#999;">VS</div>
       {% endif %}
       {% if match.number_of_games %}
         <div class="bo-tag">BO{{ match.number_of_games }}</div>
       {% endif %}
-      {% if match.games %}
+      {% if match._live_scores and match._live_scores.team1_current is not none %}
         <div class="map-scores">
-        {% for game in match.games %}
-          {% if game.status == 'finished' %}
-            {% set gr = game.results or [] %}
-            {% set gs1 = gr[0].score if gr|length > 0 else 0 %}
-            {% set gs2 = gr[1].score if gr|length > 1 else 0 %}
-            {% set map_name = game.map.name if game.map else 'M' ~ loop.index %}
-            {% set gwid = game.winner.id if game.winner else None %}
-            {% set t1id = match.opponents[0].opponent.id if match.opponents and match.opponents|length > 0 else 0 %}
-            {% if gwid == t1id %}
-              <span class="map-tag win">{{ map_name }} {{ gs1 }}:{{ gs2 }}</span>
-            {% elif gwid %}
-              <span class="map-tag lose">{{ map_name }} {{ gs1 }}:{{ gs2 }}</span>
-            {% else %}
-              <span class="map-tag">{{ map_name }} {{ gs1 }}:{{ gs2 }}</span>
-            {% endif %}
-          {% endif %}
-        {% endfor %}
+          <span class="map-tag" style="background:#e8f5e9; color:#2e7d32; font-weight:700;">当前地图 {{ match._live_scores.team1_current or 0 }}:{{ match._live_scores.team2_current or 0 }}</span>
         </div>
       {% endif %}
     </div>
@@ -276,10 +271,14 @@
     <div class="team-col right">
       <div class="team-logo">
         {% if match.opponents and match.opponents|length > 1 and match.opponents[1].opponent.image_url %}
-        <img src="{{ match.opponents[1].opponent.image_url }}" alt="">
+        {% if match.opponents[1].opponent.image_url %}
+        <img src="{{ match.opponents[1].opponent.image_url }}" alt="" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=&quot;font-size:18px;font-weight:900;color:#555&quot;>{{ match.opponents[1].opponent.name[:2] }}</span>'">
+        {% else %}
+        <span style="font-size:18px;font-weight:900;color:#555">{{ match.opponents[1].opponent.name[:2] }}</span>
+        {% endif %}
         {% endif %}
       </div>
-      <span class="team-name">{{ match.opponents[1].opponent.name if match.opponents and match.opponents|length > 1 else 'TBD' }}</span>
+      <span class="team-name">{{ (match.opponents[1].opponent.name or 'TBD') if match.opponents and match.opponents|length > 1 else 'TBD' }}</span>
     </div>
   </div>
   {% endfor %}

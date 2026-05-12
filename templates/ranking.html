@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    background: #f5f5f5;
+    color: #1a1a2e;
+    min-width: 700px;
+    padding: 0;
+  }
+  .page-header {
+    background: #1a1a2e;
+    padding: 28px 36px 22px;
+    text-align: center;
+  }
+  .page-header h1 { font-size: 30px; font-weight: 900; letter-spacing: 6px; color: #fff; }
+  .page-header .sub { font-size: 13px; color: #8888aa; margin-top: 6px; letter-spacing: 1px; }
+  .ranking-table {
+    margin: 16px 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .rank-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 16px;
+  }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-row:hover { background: #f8f9fa; }
+  .rank-num {
+    width: 40px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .rank-top3 { color: #f59e0b; }
+  .rank-else { color: #6b7280; }
+  .rank-logo {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    background: #f0f0f0;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .rank-logo img { width: 28px; height: 28px; object-fit: contain; }
+  .rank-name {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+  .rank-points {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a2e;
+    background: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: #bbb;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>{{ title }}</h1>
+  <div class="sub">{{ subtitle }} | HLTV</div>
+</div>
+
+<div class="ranking-table">
+  {% for r in rankings %}
+  <div class="rank-row">
+    <div class="rank-num {{ 'rank-top3' if r.placement <= 3 else 'rank-else' }}">{{ r.placement }}</div>
+    <div class="rank-logo">
+      {% if r.logo_url %}
+      <img src="{{ r.logo_url }}" alt="">
+      {% endif %}
+    </div>
+    <div class="rank-name">{{ r.team_name }}</div>
+    <div class="rank-points">{{ r.points }} pts</div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="footer">HLTV RANKING | CS2 ESPORTS</div>
+</body>
+</html>

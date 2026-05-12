@@ -134,20 +134,21 @@ class KillStorage:
                         )
                         await self._db.commit()
 
-                        map_name = await self._get_round_map(match_id, round_number)
+                        team_name = await self._get_round_team(match_id, round_number)
                         aces.append({
                             "match_id": match_id,
                             "player_name": player_name,
                             "round_number": round_number,
                             "kill_count": kill_count,
-                            "map_name": map_name or "Unknown",
+                            "map_name": "Unknown",
+                            "team_name": team_name or "Unknown",
                         })
         return aces
 
-    async def _get_round_map(self, match_id: int, round_number: int) -> Optional[str]:
+    async def _get_round_team(self, match_id: int, round_number: int) -> Optional[str]:
         async with self._db.execute(
-            "SELECT DISTINCT killer_team FROM kill_events WHERE match_id = ? LIMIT 1",
-            (match_id,),
+            "SELECT DISTINCT killer_team FROM kill_events WHERE match_id = ? AND round_number = ? LIMIT 1",
+            (match_id, round_number),
         ) as cursor:
             row = await cursor.fetchone()
             return row[0] if row else None

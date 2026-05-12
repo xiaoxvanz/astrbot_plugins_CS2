@@ -4,5 +4,6 @@
 from .base import BaseAPIProvider
 from .pandascore import PandaScoreAPI
 from .hltv import HLTVAPI
+from .merged import MergedAPI
 
-__all__ = ["BaseAPIProvider", "PandaScoreAPI", "HLTVAPI"]
+__all__ = ["BaseAPIProvider", "PandaScoreAPI", "HLTVAPI", "MergedAPI"]

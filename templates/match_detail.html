@@ -211,7 +211,25 @@
     </div>
   </div>
 
-  {% if match.games %}
+  {% if match.map_details %}
+  <div class="maps-section">
+    <div class="maps-title">MAP SCORES</div>
+    {% for md in match.map_details %}
+    {% set s1 = md.team1_score %}
+    {% set s2 = md.team2_score %}
+    {% set total = s1 + s2 if s1 + s2 > 0 else 1 %}
+    {% set p1 = (s1 / total * 100) | round(0) | int %}
+    {% set p2 = 100 - p1 %}
+    <div class="map-row {{ 'winner-left' if s1 > s2 else 'winner-right' if s2 > s1 else '' }}">
+      <div class="map-name">{{ md.map_name }}</div>
+      <div class="map-bar-container">
+        <div class="map-bar left {{ 'winner' if s1 > s2 }}" style="width: {{ p1 }}%;">{{ s1 }}</div>
+        <div class="map-bar right {{ 'winner' if s2 > s1 }}" style="width: {{ p2 }}%;">{{ s2 }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% elif match.games %}
   <div class="maps-section">
     <div class="maps-title">MAP SCORES</div>
     {% for game in match.games %}
@@ -236,6 +254,17 @@
   </div>
   {% endif %}
 
-  <div class="footer">POWERED BY PANDASCORE | CS2 ESPORTS TRACKER</div>
+  {% if match.map_pool %}
+  <div style="margin-top:16px; padding:12px 24px; background:#f0f0f0; border-radius:8px;">
+    <div style="font-size:12px; color:#999; margin-bottom:8px;">MAP POOL</div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      {% for map_name in match.map_pool %}
+      <span style="padding:4px 12px; background:#1a1a2e; color:#fff; border-radius:4px; font-size:13px; font-weight:600;">{{ map_name }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="footer">HLTV / PANDASCORE | CS2 ESPORTS</div>
 </body>
 </html>
